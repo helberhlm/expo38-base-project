@@ -1,21 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ActivityIndicator } from 'react-native';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import AppRoutes from './src/routes';
+import { NavigationContainer } from '@react-navigation/native';
+import { store, persistor } from './src/store';
 
 export default function App() {
+  const [isReady, setReady] = useState(false);
+
+  useEffect(() => {
+    /* load configurations here */
+    // await Font.loadAsync({
+    //   Roboto: require('native-base/Fonts/Roboto.ttf'),
+    //   Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+    //   ...Ionicons.font,
+    //   'AccordAlternate': require('./src/assets/fonts/AccordAlternate.ttf'),
+    //   'AccordAlternate-Bold': require('./src/assets/fonts/AccordAlternate-Bold.ttf'),
+    //   'AccordAlternate-Thin': require('./src/assets/fonts/AccordAlternate-Thin.ttf'),
+    // });
+    setReady(true);
+  }, []);
+
+  const renderLoading = () => {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator size={"large"} />
+      </View>
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <PersistGate loading={renderLoading()} persistor={persistor}>
+        <NavigationContainer>
+          <AppRoutes />
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
