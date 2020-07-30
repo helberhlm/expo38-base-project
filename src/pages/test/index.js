@@ -18,7 +18,7 @@ export default function Test({ navigation }) {
   return (
     <View style={styles.container}>
       <Button title="I'm done, sign me out" onPress={_signOutAsync} />
-      <Button title="Voltar" onPress={() => navigation.goBack()} />
+      <Button title="Back" onPress={() => navigation.goBack()} />
       <StatusBar barStyle="default" />
     </View>
   );
